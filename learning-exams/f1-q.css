@@ -40,6 +40,11 @@
       color: white;
     }
 
+    body.racingbulls {
+      background-color: #7c7e8b;
+      color: white;
+    }
+
     h1 {
       transition: color 0.4s ease;
     }
