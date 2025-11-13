@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Table with getElementById</title>
+<style>
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 8px;
+  }
+  button {
+    margin: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h2>Dynamic Table (getElementById)</h2>
+<button onclick="addRow()">Add Row</button>
+<button onclick="removeRow()">Remove Row</button>
+
+  
+  <input id="name"/>
+  
+<table id="myTable">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody id="myTableBody">
+    <tr>
+      <td>1</td>
+      <td>John</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+let count = 1; // keep track of rows
+
+function addRow() {
+  
+  const name = document.getElementById("name").value;
+  
+  count++;
+  // Select tbody using getElementById
+  const tbody = document.getElementById("myTableBody");
+
+  const tr = document.createElement("tr");
+
+  const td1 = document.createElement("td");
+  td1.textContent = count;
+
+  const td2 = document.createElement("td");
+  td2.textContent = name + count;
+  
+  tr.appendChild(td1);
+  tr.appendChild(td2);
+
+  tbody.appendChild(tr);
+
+}
+
+function removeRow() {
+  const tbody = document.getElementById("myTableBody");
+  if (tbody.lastChild) {
+    tbody.removeChild(tbody.lastChild);
+    count--;
+  }
+}
+</script>
+
+</body>
+</html>
