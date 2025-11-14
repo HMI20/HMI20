@@ -68,10 +68,21 @@ function addRow() {
   tr.appendChild(td1);
   tr.appendChild(td2);
   tr.appendChild(td3);
-
+    colorRow(tr);
   tbody.appendChild(tr);
-
+   
 }
+
+
+function colorRow(row) {
+     if(count%2==0){
+        row.style.backgroundColor = "#f5f500";
+    } else {
+        row.style.backgroundColor = "#ffffff";
+}
+}
+
+
 
 function removeRow() {
   const tbody = document.getElementById("myTableBody");
