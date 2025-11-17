@@ -21,24 +21,25 @@ const pitStopTime = 20;
 console.log("the winner is "+ getWinner(driversData,car,totalLaps,idealLap,tires.soft.base,tires.soft.wearRate))
 }
 
-function getWinner(driversData,car,totalLaps,idealLap,tiresBase,tiresWear){
+function getWinner(driversData, car, totalLaps, idealLap, tiresBase, tiresWear) {
     let winner = " ";
-    let min=Infinity;
+    let min = Infinity;
 
-        for (let i=0; i<driversData.length; i++) {
-            const teamScore = (driversData[i].score*0.6+ car[i].score*0.4);
-            let raceTime = 0;
-            for (let lapNumber = 1; lapNumber<=totalLaps; lapNumber++) {
+    for (let i = 0; i < driversData.length; i++) {
+        const teamScore = (driversData[i].score * 0.6 + car[i].score * 0.4);
+        let raceTime = 0;
+        for (let lapNumber = 1; lapNumber <= totalLaps; lapNumber++) {
 
-            const lapTime = idealLap+(100*(1-(teamScore*(tiresBase-(tiresWear*lapNumber)))))
-            raceTime = raceTime+lapTime;
+            const lapTime = idealLap + (100 * (1 - (teamScore * (tiresBase - (tiresWear * lapNumber)))))
+            raceTime = raceTime + lapTime;
 
-            }
-            let raceTimeInMin = raceTime/60 ;
-            console.log("Driver " +driversData[i].name +" race time " + raceTimeInMin);
-            if (raceTimeInMin < min) {
-                        min = raceTimeInMin;
-                        winner = driversData[i].name;
-                    }
-            return winner;
-        }}
+        }
+        let raceTimeInMin = raceTime / 60;
+        console.log("Driver " + driversData[i].name + " race time " + raceTimeInMin);
+        if (raceTimeInMin < min) {
+            min = raceTimeInMin;
+            winner = driversData[i].name;
+        }
+    }
+    return winner;
+}
