@@ -1,19 +1,23 @@
 function main (){
     const driversData = [
-    { name: "Max Verstappen", score: 0.98 },
-    { name: "Luis Hamelton", score: 0.96 },
-    { name: "Lando Noras", score: 0.97 }  
-];
+    { name: "Max Verstappen", score: 0.98, strategy: strategies[0] },
+    { name: "Luis Hamelton", score: 0.96, strategy: strategies[0] },
+    { name: "Lando Noras", score: 0.97,strategy: strategies[0] }  ];
 const car = [
     { team: "Red Bull", score: 0.92 },
     { team: "Mercedes", score: 0.95 },
-    { team: "Maclaren", score: 0.97 }];
+    { team: "Maclaren", score: 0.97 }   ];
 
 const tires = {
   soft:   { base: 1.00, wearRate: 0.015 },
   medium: { base: 0.95, wearRate: 0.010 },
-  hard:   { base: 0.90, wearRate: 0.005 }
-};
+  hard:   { base: 0.90, wearRate: 0.005 }   };
+
+const strategies = [
+    [ {soft: 5}, {midium: 10}, {hard:15}  ],
+    [ {midium:9} , {midium: 9}, {hard: 12}],
+    [ {midium: 12}, {hard: 18} ]    ];
+
 const totalLaps = 30;
 const idealLap = 100; //in seconds
 let pitStops = 0;
