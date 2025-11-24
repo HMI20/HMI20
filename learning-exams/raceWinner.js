@@ -1,4 +1,5 @@
-function calculateLapTimeLoss(performanceScore, tireBaseGrip, tireWearRate, lapNumber) {
+// i wanted to make the UX more flexble but couldn't due to the lines limit
+function calculateLapTimeLoss(performanceScore, tireBaseGrip, tireWearRate, lapNumber) {        
     const tirePerformance = Math.max(0, tireBaseGrip - tireWearRate * lapNumber); // tire performance decreases each lap
     const performanceFactor = 1 - (performanceScore * tirePerformance); // performanceFactor goes from 0 (perfect) → 1 (very slow)
     return 100 * performanceFactor;
@@ -35,31 +36,40 @@ function getRaceWinner(drivers, idealLapTime, pitStopDuration) {
     return winner;
 }
 
-function startRaceSimulation() {
-    const cars = [
+const drivers = [ 
+        {name: "Max Verstappen", score: 0.98},
+        {name: "Lewis Hamilton", score: 0.96},
+        {name: "Lando Norris", score: 0.97}
+    ];
+ const cars = [
         { team: "Red Bull", score: 0.92 },
         { team: "Mercedes", score: 0.95 },
         { team: "McLaren", score: 0.97 }
     ];
-    const tires = {
+const selectedDrivers = [];
+ const tires = {
         soft:   { base: 1.00, wearRate: 0.015 },
         medium: { base: 0.95, wearRate: 0.010 },
         hard:   { base: 0.90, wearRate: 0.005 }
     };
-    const strategies = [
+const strategies = [
         [{tire: tires.soft, laps: 5}, {tire: tires.medium, laps: 10}, {tire: tires.hard, laps: 15}],
         [{tire: tires.medium,laps: 9} , {tire: tires.medium, laps: 9}, {tire: tires.hard, laps: 12}],
         [{tire: tires.medium, laps: 12}, {tire: tires.hard, laps: 18}]    
     ];
-    const drivers = [ 
-        {name: "Max Verstappen", score: 0.98, strategy: strategies[0], team: cars[0]},
-        {name: "Lewis Hamilton", score: 0.96, strategy: strategies[1], team: cars[1]},
-        {name: "Lando Norris", score: 0.97, strategy: strategies[2], team: cars[2]}
-    ];
+
+function startRaceSimulation() {
     const idealLapTime = 100;
     const pitStopSeconds = 20;
 
-    console.log("the winner is "+ getRaceWinner(drivers, idealLapTime, pitStopSeconds))
+    console.log("the winner is "+ getRaceWinner(selectedDrivers, idealLapTime, pitStopSeconds))
 }
 
-startRaceSimulation();
+function addDriver (){
+    const driverIndex = document.getElementById("driver").value;
+    const teamIndex = document.getElementById("team").value;
+    const strategyIndex = document.getElementById("strategy").value
+    selectedDrivers.push({name: drivers[driverIndex].name, score: drivers[driverIndex].score, strategy: strategies[strategyIndex], team: cars[teamIndex]});
+    console.log("selected Driver",selectedDrivers);
+}
+
