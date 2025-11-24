@@ -61,7 +61,7 @@ const strategies = [
 function startRaceSimulation() {
     const idealLapTime = 100;
     const pitStopSeconds = 20;
-
+    // check if selected drivers length is zero then disply You need to select at least a one driver
     console.log("the winner is "+ getRaceWinner(selectedDrivers, idealLapTime, pitStopSeconds))
 }
 
@@ -70,6 +70,9 @@ function addDriver (){
     const teamIndex = document.getElementById("team").value;
     const strategyIndex = document.getElementById("strategy").value
     selectedDrivers.push({name: drivers[driverIndex].name, score: drivers[driverIndex].score, strategy: strategies[strategyIndex], team: cars[teamIndex]});
-    console.log("selected Driver",selectedDrivers);
+    const list = document.getElementById("selectedDrivers");
+    const li = document.createElement("li");
+    li.textContent = drivers[driverIndex].name+" driving "+cars[teamIndex].team+" for the startegy of "+document.getElementById("strategy").selectedOptions[0].textContent;
+    list.appendChild(li)
 }
 
