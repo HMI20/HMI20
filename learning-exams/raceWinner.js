@@ -5,7 +5,6 @@ function calculateLapTimeLoss(performanceScore, tireBaseGrip, tireWearRate, lapN
     return 100 * performanceFactor;
 }
 
-
 function getRaceWinner(drivers, idealLapTime, pitStopDuration) {
     let winner = "";
     let fastestRaceTime = Infinity;
@@ -20,20 +19,18 @@ function getRaceWinner(drivers, idealLapTime, pitStopDuration) {
                 const tireWearRate = strategy.tire.wearRate;
                 const lapTime = idealLapTime + calculateLapTimeLoss(performanceScore, tireBaseGrip, tireWearRate, lapNumber);
                 raceTime = raceTime + lapTime;
-
             }
-
         }
         const pitStopCount = (drivers[i].strategy.length) - 1;
         const raceTimeInSec = raceTime + (pitStopCount * pitStopDuration);
-        const raceTimeInMin = raceTimeInSec / 60;
-        console.log("Driver " + drivers[i].name + " race time " + raceTimeInMin.toFixed(2) + " minutes");
+        const raceTimeInMin = (raceTimeInSec / 60).toFixed(2);
+        console.log("Driver " + drivers[i].name + " race time " + raceTimeInMin + " minutes");
         if (raceTimeInMin < fastestRaceTime) {
             fastestRaceTime = raceTimeInMin;
             winner = drivers[i].name;
         }
     }
-    return winner;
+    return { winner, time: fastestRaceTime };
 }
 
 const drivers = [ 
@@ -59,20 +56,26 @@ const strategies = [
     ];
 
 function startRaceSimulation() {
-    const idealLapTime = 100;
-    const pitStopSeconds = 20;
-    // check if selected drivers length is zero then disply You need to select at least a one driver
-    console.log("the winner is "+ getRaceWinner(selectedDrivers, idealLapTime, pitStopSeconds))
+    const result = document.getElementById("result")
+    if (selectedDrivers.length === 0) {
+        result.textContent = "You need to add at least a one driver";
+    } else { 
+        const idealLapTime = 100;
+        const pitStopSeconds = 20;
+        const raceResult = getRaceWinner(selectedDrivers, idealLapTime, pitStopSeconds)
+        result.textContent ="The winner is " + raceResult.winner + " with a time of " + raceResult.time + " minutes.";
+    }
 }
 
-function addDriver (){
+function addDriver () {
     const driverIndex = document.getElementById("driver").value;
     const teamIndex = document.getElementById("team").value;
-    const strategyIndex = document.getElementById("strategy").value
-    selectedDrivers.push({name: drivers[driverIndex].name, score: drivers[driverIndex].score, strategy: strategies[strategyIndex], team: cars[teamIndex]});
+    const strategyElement = document.getElementById("strategy");
+    const strategyIndex = strategyElement.value;
+    const driver = drivers[driverIndex];
+    selectedDrivers.push({ name: driver.name, score: driver.score, team: cars[teamIndex], strategy: strategies[strategyIndex] })
     const list = document.getElementById("selectedDrivers");
     const li = document.createElement("li");
-    li.textContent = drivers[driverIndex].name+" driving "+cars[teamIndex].team+" for the startegy of "+document.getElementById("strategy").selectedOptions[0].textContent;
-    list.appendChild(li)
+    li.textContent = driver.name+ " driving " + cars[teamIndex].team + " with the strategy of " + strategyElement.selectedOptions[0].textContent;
+    list.appendChild(li);
 }
-

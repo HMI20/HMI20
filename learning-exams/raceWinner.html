@@ -1,36 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>F1 Strategy Selector</title>
-</head>
-<body>
-
-    <select id="driver">
-        <option value="0"> Max Verstappen</option>
-        <option value="1"> Lewis Hamilton</option>
-        <option value="2"> Lando Norris</option>
-    </select>
-
-    <select id="team">
-        <option value="0"> Red Bull</option>
-        <option value="1"> Mercedes</option>
-        <option value="2"> McLaren</option>
-    </select>
-
-    <select id="strategy">
-        <option value="0"> Soft 5 laps → Medium 10 laps → Hard 15 laps</option>
-        <option value="1"> Medium 9 laps → Medium 9 laps → Hard 12 laps</option>
-        <option value="2"> Medium 12 laps → Hard 18 laps </option>
-    </select>
-
-   <button onclick="addDriver()">Add Driver</button>
-   
-   <ul id="selectedDrivers">
-   </ul>
-   
-    <button onclick="startRaceSimulation()">Run Simulation</button>
-
-    <p id="result"></p>
-    <script src="./raceWinner.js"></script>
-</body>
+    <head>
+        <title>F1 Strategy Selector</title>
+        <style> body {text-align: center;} li {list-style: none; margin: 10px 0;} </style>
+    </head>
+    <body>
+        <h2>Add a Driver</h2>
+        <select id="driver">
+            <option value="0"> Max Verstappen</option>
+            <option value="1"> Lewis Hamilton</option>
+            <option value="2"> Lando Norris</option>
+        </select>
+        <select id="team">
+            <option value="0"> Red Bull</option>
+            <option value="1"> Mercedes</option>
+            <option value="2"> McLaren</option>
+        </select>
+        <select id="strategy">
+            <option value="0"> Soft 5 laps → Medium 10 laps → Hard 15 laps</option>
+            <option value="1"> Medium 9 laps → Medium 9 laps → Hard 12 laps</option>
+            <option value="2"> Medium 12 laps → Hard 18 laps </option>
+        </select>
+    <button onclick="addDriver()">Add Driver</button>
+        <h3>Selected Drivers</h3>
+        <ul id="selectedDrivers"></ul>
+        <button onclick="startRaceSimulation()">Race Simulation</button>
+        <p id="result"></p>
+        <script src="./raceWinner.js"></script>
+    </body>
 </html>
