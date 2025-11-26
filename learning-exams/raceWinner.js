@@ -27,7 +27,7 @@ function getRaceWinner(drivers, idealLapTime, pitStopDuration) {
         console.log("Driver " + drivers[i].name + " race time " + raceTimeInMin + " minutes");
         if (raceTimeInMin < fastestRaceTime) {
             fastestRaceTime = raceTimeInMin;
-            winner = drivers[i].name;
+            winner = drivers[i];
         }
     }
     return { winner, time: fastestRaceTime };
@@ -45,9 +45,9 @@ const drivers = [
     ];
 const selectedDrivers = [];
  const tires = {
-        soft:   { base: 1.00, wearRate: 0.015 },
-        medium: { base: 0.95, wearRate: 0.010 },
-        hard:   { base: 0.90, wearRate: 0.005 }
+        soft:   { base: 1.00, wearRate: 0.015, type: "soft" },
+        medium: { base: 0.95, wearRate: 0.010, type: "medium" },
+        hard:   { base: 0.90, wearRate: 0.005, type: "hard" }
     };
 const strategies = [
         [{tire: tires.soft, laps: 5}, {tire: tires.medium, laps: 10}, {tire: tires.hard, laps: 15}],
@@ -63,8 +63,17 @@ function startRaceSimulation() {
         const idealLapTime = 100;
         const pitStopSeconds = 20;
         const raceResult = getRaceWinner(selectedDrivers, idealLapTime, pitStopSeconds)
-        result.textContent ="The winner is " + raceResult.winner + " with a time of " + raceResult.time + " minutes.";
+        const winnerStrategy = starategyExplainer(raceResult.winner.strategy)
+        result.textContent ="The winner is " + raceResult.winner.name + " with a time of " + raceResult.time + " minutes. " + winnerStrategy;
     }
+}
+
+function starategyExplainer(winnerStrategy) {
+    let strategyText = "the winner strategy was "
+    for (s=0; s<strategy.length; s++){ 
+        strategyText = strategyText + winnerStrategy[s].tire.type + " for " + winnerStrategy[s].laps +" laps. "
+    }
+    return strategyText;
 }
 
 function addDriver () {
