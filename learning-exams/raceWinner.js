@@ -1,7 +1,7 @@
-// i wanted to make the UX more flexble but couldn't due to the lines limit
-function calculateLapTimeLoss(performanceScore, tireBaseGrip, tireWearRate, lapNumber) {        
-    const tirePerformance = Math.max(0, tireBaseGrip - tireWearRate * lapNumber); // tire performance decreases each lap
-    const performanceFactor = 1 - (performanceScore * tirePerformance); // performanceFactor goes from 0 (perfect) → 1 (very slow)
+// I wanted to make the UX more flexible and add validation, but couldn't due to the line limit. 
+function calculateLapTimeLoss(performanceScore, tire, lapNumber) {
+    const tirePerformance = tire.base - tire.wear * lapNumber; // tire performance decreases each lap
+    const performanceFactor = 1 - performanceScore * tirePerformance;
     return 100 * performanceFactor;
 }
 
@@ -11,80 +11,63 @@ function getRaceWinner(drivers, idealLapTime, pitStopDuration) {
     for (let i = 0; i < drivers.length; i++) {
         const performanceScore = (drivers[i].score * 0.6 + drivers[i].team.score * 0.4);
         let raceTime = 0;
-
         for (let j = 0; j < drivers[i].strategy.length; j++) {
             const strategy = drivers[i].strategy[j];
             for (let lapNumber = 1; lapNumber <= strategy.laps; lapNumber++) {
-                const tireBaseGrip = strategy.tire.base;
-                const tireWearRate = strategy.tire.wearRate;
-                const lapTime = idealLapTime + calculateLapTimeLoss(performanceScore, tireBaseGrip, tireWearRate, lapNumber);
+                const lapTime = idealLapTime + calculateLapTimeLoss(performanceScore, strategy.tire, lapNumber);
                 raceTime = raceTime + lapTime;
             }
         }
-        const pitStopCount = (drivers[i].strategy.length) - 1;
-        const raceTimeInSec = raceTime + (pitStopCount * pitStopDuration);
-        const raceTimeInMin = (raceTimeInSec / 60).toFixed(2);
-        console.log("Driver " + drivers[i].name + " race time " + raceTimeInMin + " minutes");
-        if (raceTimeInMin < fastestRaceTime) {
-            fastestRaceTime = raceTimeInMin;
+        raceTime = raceTime + (drivers[i].strategy.length - 1) * pitStopDuration; // add pit stop time
+        console.log("Driver " + drivers[i].name + " race time " + (raceTime/60).toFixed(2) + " min");
+        if (raceTime < fastestRaceTime) {
+            fastestRaceTime = raceTime;
             winner = drivers[i];
         }
     }
-    return { winner, time: fastestRaceTime };
+    return { winner, time: (fastestRaceTime/60).toFixed(2)}; // convert to minutes and format to 2 decimals
 }
 
-const drivers = [ 
-        {name: "Max Verstappen", score: 0.98},
-        {name: "Lewis Hamilton", score: 0.96},
-        {name: "Lando Norris", score: 0.97}
-    ];
- const cars = [
-        { team: "Red Bull", score: 0.92 },
-        { team: "Mercedes", score: 0.95 },
-        { team: "McLaren", score: 0.97 }
-    ];
-const selectedDrivers = [];
- const tires = {
-        soft:   { base: 1.00, wearRate: 0.015, type: "soft" },
-        medium: { base: 0.95, wearRate: 0.010, type: "medium" },
-        hard:   { base: 0.90, wearRate: 0.005, type: "hard" }
-    };
-const strategies = [
-        [{tire: tires.soft, laps: 5}, {tire: tires.medium, laps: 10}, {tire: tires.hard, laps: 15}],
-        [{tire: tires.medium,laps: 9} , {tire: tires.medium, laps: 9}, {tire: tires.hard, laps: 12}],
-        [{tire: tires.medium, laps: 12}, {tire: tires.hard, laps: 18}]    
-    ];
-
-function startRaceSimulation() {
-    const result = document.getElementById("result")
-    if (selectedDrivers.length === 0) {
-        result.textContent = "You need to add at least a one driver";
-    } else { 
-        const idealLapTime = 100;
-        const pitStopSeconds = 20;
-        const raceResult = getRaceWinner(selectedDrivers, idealLapTime, pitStopSeconds)
-        const winnerStrategy = starategyExplainer(raceResult.winner.strategy)
-        result.textContent ="The winner is " + raceResult.winner.name + " with a time of " + raceResult.time + " minutes. " + winnerStrategy;
-    }
-}
-
-function starategyExplainer(winnerStrategy) {
-    let strategyText = "the winner strategy was "
-    for (s=0; s<strategy.length; s++){ 
-        strategyText = strategyText + winnerStrategy[s].tire.type + " for " + winnerStrategy[s].laps +" laps. "
+function describeStrategy(strategy) {
+    let strategyText = "The winning strategy was ";
+    for (let i=0; i<strategy.length; i++) { 
+        strategyText = strategyText + strategy[i].tire.type + " for " + strategy[i].laps + " laps ";
     }
     return strategyText;
 }
 
+const selectedDrivers = []; // stores drivers added by user (reset by refresh)
+function startRaceSimulation() {
+    const result = document.getElementById("result");
+    if (selectedDrivers.length === 0) {
+        result.textContent = "You need to add at least one driver";
+    } else { 
+        const raceResult = getRaceWinner(selectedDrivers, 100, 20);
+        const winnerStrategy = describeStrategy(raceResult.winner.strategy);
+        result.textContent ="The winner is " + raceResult.winner.name + " with a time of " + raceResult.time + " minutes. " + winnerStrategy;
+    }
+}
+
 function addDriver () {
+    const drivers = [{ name: "Max Verstappen", score: 0.98 }, { name: "Lewis Hamilton", score: 0.96 }];
+    const cars = [{ team: "Red Bull", score: 0.92 }, { team: "Mercedes", score: 0.95 }];
+    const tires = { // tire types with degradation
+        soft:   { base: 1.00, wearRate: 0.015, type: "soft" },
+        medium: { base: 0.95, wearRate: 0.010, type: "medium" },
+        hard:   { base: 0.90, wearRate: 0.005, type: "hard" }
+    };
+    const strategies = [
+        [{tire: tires.soft, laps: 5}, {tire: tires.medium, laps: 10}, {tire: tires.hard, laps: 15}],
+        [{tire: tires.medium,laps: 9} , {tire: tires.medium, laps: 9}, {tire: tires.hard, laps: 12}],
+        [{tire: tires.medium, laps: 12}, {tire: tires.hard, laps: 18}]    
+    ];
     const driverIndex = document.getElementById("driver").value;
     const teamIndex = document.getElementById("team").value;
     const strategyElement = document.getElementById("strategy");
-    const strategyIndex = strategyElement.value;
-    const driver = drivers[driverIndex];
-    selectedDrivers.push({ name: driver.name, score: driver.score, team: cars[teamIndex], strategy: strategies[strategyIndex] })
+    const driver = drivers[driverIndex]; // get chosen driver
+    selectedDrivers.push({ name: driver.name, score: driver.score, team: cars[teamIndex], strategy: strategies[strategyElement.value] });
     const list = document.getElementById("selectedDrivers");
     const li = document.createElement("li");
-    li.textContent = driver.name+ " driving " + cars[teamIndex].team + " with the strategy of " + strategyElement.selectedOptions[0].textContent;
-    list.appendChild(li);
-}
+    li.textContent = driver.name + " driving " + cars[teamIndex].team + " with the strategy of " + strategyElement.selectedOptions[0].textContent;
+    list.appendChild(li); // display selection
+} // https://github.com/HMI20/HMI20/blob/main/learning-exams/raceWinner.js
