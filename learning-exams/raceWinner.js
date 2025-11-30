@@ -29,10 +29,14 @@ function getRaceWinner(drivers, idealLapTime, pitStopDuration) {
 }
 
 function describeStrategy(strategy) {
-  let strategyText = 'The winning strategy was ';
+  let strategyText = ' ';
   for (let i = 0; i < strategy.length; i++) {
-    strategyText = strategyText + strategy[i].tire.type + ' for ' + strategy[i].laps + ' laps ';
-  }
+    if (i=== strategy.length-1){
+        strategyText = strategyText + strategy[i].tire.type + ' for ' + strategy[i].laps + ' laps ';
+    }
+    else{
+        strategyText = strategyText + strategy[i].tire.type + ' for ' + strategy[i].laps + ' laps → ';
+    }
   return strategyText;
 }
 
@@ -45,7 +49,7 @@ function startRaceSimulation() {
   } else {
     const raceResult = getRaceWinner(selectedDrivers, 100, 20);
     const strategy = describeStrategy(raceResult.winner.strategy);
-    result.textContent = raceResult.winner.name + ' driving ' + raceResult.winner.car.team + ' wins in ' + raceResult.time + ' mins. ' + strategy;
+    result.textContent = raceResult.winner.name + ' driving ' + raceResult.winner.car.team + ' wins in ' + raceResult.time + ' mins. with strategy of ' + strategy;
   }
 }
 
@@ -84,15 +88,16 @@ function addDriver() {
   const teamIndex = document.getElementById('team').value;
   const strategyElement = document.getElementById('strategy');
   const driver = drivers[driverIndex]; // get chosen driver
+  const theStrategy = strategies[strategyElement.value]
   selectedDrivers.push({
     name: driver.name,
     score: driver.score,
     car: cars[teamIndex],
-    strategy: strategies[strategyElement.value],
+    strategy: theStrategy
   });
   const list = document.getElementById('selectedDrivers');
   const li = document.createElement('li');
-  li.textContent = driver.name + ' driving ' + cars[teamIndex].team + ' with the strategy of ' + strategyElement.selectedOptions[0].textContent;
+  li.textContent = driver.name + ' driving ' + cars[teamIndex].team + ' with the strategy of ' + describeStrategy(theStrategy);
   list.appendChild(li); // display selection
 } // https://github.com/HMI20/HMI20/blob/main/learning-exams/raceWinner.js
 window.addDriver = addDriver; // Expose functions so PlayCode can call them from HTML
