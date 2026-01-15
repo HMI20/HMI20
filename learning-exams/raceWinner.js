@@ -89,9 +89,7 @@ let startRaceSimulation = () => {
 }
 const validator = (selectedDrivers, currentDriver) => {
   
-  let entryIdentifier =  currentDriver.name + ' driving ' +currentDriver.car.team + ' with strategy: ' + describeStrategy(currentDriver.strategy);
-  
-  let alreadyExists = selectedDrivers.some(d => (d.name + ' driving ' + d.car.team + ' with strategy: ' + describeStrategy(d.strategy)) === entryIdentifier);
+  let alreadyExists = selectedDrivers.some(d => (currentDriver.name == d.name && currentDriver.car.team == d.car.team && describeStrategy(currentDriver.strategy)== describeStrategy(d.strategy)));
     return alreadyExists
 }
 let addDriver = () => {
