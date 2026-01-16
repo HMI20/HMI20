@@ -1,5 +1,5 @@
 let cart = [
-{name: "blaBla", price:10, quantity:1 , id:1010 }
+{name: "blaBla", price:10, quantity:2 , id:1010 }
 ]
 
 let products = [
@@ -29,11 +29,39 @@ const addItem = (product) => {
     cart.push({...product,quantity:1})}
 }
 
+
+
+const filterProducts = (products, limit) => {
+
+    return products.filter((product)=> product.price<limit)
+}
+
 addItem(products[6])
 addItem(products[6])
+addItem(products[5])
 console.log("cart", cart)
+
+const quantityChecker = (product) => {
+    if (product.quantity>1){product.quantity=product.quantity-1}
+    else {deletItem(product.id)}
+}
 
 const deletItem = (id)=> {
     cart = cart.filter((item)=> item.id!=id)   
 }
-deletItem(cart[0].id)
+
+quantityChecker(cart[0])
+
+let totalCoast=0 
+
+let totalPrice = (cart) => {
+    for (let i = 0; i<cart.length; i++){
+        
+        totalCoast = totalCoast + (cart[i].price * cart[i].quantity)
+    }
+}
+totalPrice(cart)
+console.log("total price", totalCoast)
+
+let final= filterProducts(products, 70)
+console.log("filtered", final)
