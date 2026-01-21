@@ -1,31 +1,71 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>F1 Strategy Selector</title>
-    <style>
-      body {background-color: white; text-align: center;} li {list-style: none; margin: 10px 0;}
-    </style>
-  </head>
-  <body>
-    <h2>Add a Driver</h2>
-    <select id="driver">
-      <option value="0">Max Verstappen</option>
-      <option value="1">Lewis Hamilton</option>
-    </select>
-    <select id="team">
-      <option value="0">Red Bull</option>
-      <option value="1">Mercedes</option>
-    </select>
-    <select id="strategy">
-      <option value="0">Soft 5 laps → Medium 10 laps → Hard 15 laps</option>
-      <option value="1">Medium 9 laps → Medium 9 laps → Hard 12 laps</option>
-      <option value="2">Medium 12 laps → Hard 18 laps</option>
-    </select>
-    <button onclick="addDriver()">Add Driver</button>
-    <h3>Selected Drivers</h3>
-    <ul id="selectedDrivers"></ul>
-    <button onclick="startRaceSimulation()">Race Simulation</button>
-    <p id="result"></p>
-    <script src="./raceWinner.js"></script>
-  </body>
+
+<head>
+  <title>F1 Strategy Selector</title>
+  <style>
+    body {
+      background-color: white;
+      text-align: center;
+    }
+
+    li {
+      list-style: none;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Add a Driver</h2>
+  <select id="driver">
+    <option value="0">Max Verstappen</option>
+    <option value="1">Isack Hadjar</option>
+    <option value="2">George Russell</option>
+    <option value="3">Andrea Kimi Antonelli</option>
+    <option value="4">Charles Leclerc</option>
+    <option value="5">Lewis Hamilton</option>
+    <option value="6">Lando Norris</option>
+    <option value="7">Oscar Piastri</option>
+    <option value="8">Fernando Alonso</option>
+    <option value="9">Lance Stroll</option>
+    <option value="10">Pierre Gasly</option>
+    <option value="11">Franco Colapinto</option>
+    <option value="12">Alex Albon</option>
+    <option value="13">Carlos Sainz Jr.</option>
+    <option value="14">Liam Lawson</option>
+    <option value="15">Arvid Lindblad</option>
+    <option value="16">Gabriel Bortoleto</option>
+    <option value="17">Nico Hülkenberg</option>
+    <option value="18">Esteban Ocon</option>
+    <option value="19">Oliver Bearman</option>
+    <option value="20">Sergio Perez</option>
+    <option value="21">Valtteri Bottas</option>
+  </select>
+  <select id="team">
+    <option value="0">Red Bull</option>
+    <option value="1">Mercedes</option>
+    <option value="2">Ferrari</option>
+    <option value="3">McLaren</option>
+    <option value="4">Aston Martin</option>
+    <option value="5">Alpine</option>
+    <option value="6">Williams</option>
+    <option value="7">VCARB</option>
+    <option value="8">Audi</option>
+    <option value="9">Haas</option>
+    <option value="10">Cadillac</option>
+  </select>
+  <select id="strategy">
+    <option value="0">Soft 5 laps → Medium 10 laps → Hard 15 laps</option>
+    <option value="1">Medium 9 laps → Medium 9 laps → Hard 12 laps</option>
+    <option value="2">Medium 12 laps → Hard 18 laps</option>
+  </select>
+  <button onclick="addDriver()">Add Driver</button>
+  <h3>Selected Drivers</h3>
+  <ul id="selectedDrivers"></ul>
+  <button onclick="startRaceSimulation()">Race Simulation</button>
+  <p id="result"></p>
+  <script src="./raceWinner.js"></script>
+</body>
+
 </html>
